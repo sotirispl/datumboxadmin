@@ -5,22 +5,19 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.sotiris.adminpanel.utils.AppConfig;
 
 import facebook4j.Facebook;
-import facebook4j.FacebookException;
 import facebook4j.FacebookFactory;
-import facebook4j.User;
-import facebook4j.auth.AccessToken;
-import facebook4j.auth.OAuthAuthorization;
-import facebook4j.auth.OAuthSupport;
 import facebook4j.conf.Configuration;
-import facebook4j.conf.ConfigurationBuilder;
 
+import java.io.IOException;
 import java.io.Serializable;
  
 @ManagedBean
 @SessionScoped
-
 public class LoginBean implements Serializable {
  
 	private static final long serialVersionUID = 1L;
@@ -34,40 +31,25 @@ public class LoginBean implements Serializable {
 		this.name = name;
 	}
 	
-	private Configuration getFbConfig() {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		HttpServletRequest request = (HttpServletRequest) context.getRequest();
-		String appId = request.getParameter("FacebookAppId");
-		String appSecret = request.getParameter("FacebookAppSecret");
-		
-		
-		ConfigurationBuilder confBuilder = new ConfigurationBuilder();
-		confBuilder.setDebugEnabled(true);
-		confBuilder.setOAuthAppId(appId);
-		confBuilder.setOAuthAppSecret(appSecret);
-		confBuilder.setUseSSL(true);
-		confBuilder.setJSONStoreEnabled(true);
-		Configuration config = confBuilder.build();
-		return config;
-	}
-	
-	public String login() {
-		Configuration config = getFbConfig();
+	public void authenticate() {
+		Configuration config = AppConfig.getInstance().getFbConfig();
 		FacebookFactory factory = new FacebookFactory(config);
 		Facebook client = factory.getInstance();
+		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+		HttpServletRequest request = (HttpServletRequest) context.getRequest();
+		HttpServletResponse response = (HttpServletResponse) context.getResponse();
 		
-		try {
-			OAuthSupport oAuthSupport = new OAuthAuthorization(config);
-			AccessToken token = oAuthSupport.getOAuthAppAccessToken();
-			User user = client.getMe();
-			name = user.getFirstName() + " " + user.getLastName();
-			
-		} catch (FacebookException e) {
+		request.getSession().setAttribute("facebook", client);
+        StringBuffer callbackURL = request.getRequestURL();
+        int index = callbackURL.lastIndexOf("/");
+        callbackURL.replace(index, callbackURL.length(), "").append("/index.jsf");
+        try {
+			response.sendRedirect(client.getOAuthAuthorizationURL(callbackURL.toString()));
+		} catch (IOException e) {
 			e.printStackTrace();
-			return "/login.jsf?faces-redirect=true";
 		}
-		return "/index.jsf?faces-redirect=true";
-		
+        
 	}
+	
 	
 }
