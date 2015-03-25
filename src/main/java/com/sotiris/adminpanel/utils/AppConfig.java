@@ -11,12 +11,27 @@ public class AppConfig {
 
 	protected static AppConfig instance;
 	private static Configuration config;
+	private static String appId;
+	private static String appSecret;
+	
+	public String getAppId() {
+		return appId;
+	}
+
+	public static void setAppId(String id) {
+		appId = id;
+	}
+
+	public String getAppSecret() {
+		return appSecret;
+	}
+
+	public static void setAppSecret(String secret) {
+		appSecret = secret;
+	}
+
 	
 	private AppConfig() {
-		ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
-		HttpServletRequest request = (HttpServletRequest) context.getRequest();
-		String appId = context.getInitParameter("FacebookAppId");
-		String appSecret = context.getInitParameter("FacebookAppSecret");
 		System.out.println(appId+" "+appSecret);
 		ConfigurationBuilder confBuilder = new ConfigurationBuilder();
 		confBuilder.setDebugEnabled(true);
@@ -28,7 +43,9 @@ public class AppConfig {
 		config = confBuilder.build();
 	}
 	
-	public static AppConfig getInstance() {
+	public static AppConfig getInstance(String id, String secret) {
+		setAppId(id);
+		setAppSecret(secret);
 		if(instance == null) {
 			instance = new AppConfig();
 		}

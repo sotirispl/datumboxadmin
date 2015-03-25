@@ -19,8 +19,31 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <listener>
+	    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
     
-    
+    <!-- Login filter -->
+	<filter>
+		<filter-name>AuthFilter</filter-name>
+		<filter-class>com.sotiris.adminpanel.filters.AuthFilter</filter-class>
+		<init-param>
+			<param-name>FacebookAppId</param-name>
+			<param-value>356364804559519</param-value>
+		</init-param>
+		<init-param>
+			<param-name>FacebookAppSecret</param-name>
+			<param-value>a542e03844d448a0f6741fcd4c1cb599</param-value>
+		</init-param>
+      
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthFilter</filter-name>
+		<url-pattern>*.jsf</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
+		<url-pattern>/panel/*</url-pattern>
+	</filter-mapping>
+	
     <!--
 		- Servlet that dispatches request to registered handlers (Controller implementations).
 	-->
@@ -34,14 +57,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-    <servlet-mapping>
+    <!--<servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>/</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
 
     <!-- Welcome page -->
 	<welcome-file-list>
-		<welcome-file>login.xhtml</welcome-file>
+		<welcome-file>/panel/index.xhtml</welcome-file>
 	</welcome-file-list>
  
 	<!-- JSF mapping -->
@@ -58,12 +81,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.faces</url-pattern>
+		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.xhtml</url-pattern>
+		<url-pattern>*.faces</url-pattern>
 	</servlet-mapping>
+	
 	
 	<!-- Context Parameters -->
 	<context-param>
@@ -74,5 +98,4 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	    <param-name>FacebookAppSecret</param-name>
 	    <param-value>a542e03844d448a0f6741fcd4c1cb599</param-value>
 	</context-param>
-	
 </web-app>

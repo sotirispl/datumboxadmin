@@ -130,12 +130,14 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
+			<scope>provided</scope>
 		</dependency>
  
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
 			<version>2.1</version>
+			<scope>provided</scope>
 		</dependency>
                 <!-- Tomcat 6 need this -->
 		<dependency>
@@ -143,6 +145,27 @@
 			<artifactId>el-ri</artifactId>
 			<version>1.0</version>
 		</dependency>
+		
+		<!-- mongodb java driver -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+ 
+		<!-- Spring data mongodb -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.2.0.RELEASE</version>
+		</dependency>
+ 
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+		
 	</dependencies>	
 	
 	<build>
@@ -156,6 +179,15 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
 		</plugins>
