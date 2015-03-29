@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"    
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
  
     <h:head>
     	<title>Datumbox Administration</title>
@@ -13,19 +14,52 @@
     	<h4>My Profile Details</h4>
     	<h:outputText value="#{loginBean.user.toString()}" />
     	
-    	<h:dataTable value="#{analysisBean.analysis}" var="analysis" border="1">
-		<h:column>
-			<f:facet name="header">
-				<h:outputText value="UUID"/>
-			</f:facet>
-			<h:outputText value="#{analysis.userid}"/>
-		</h:column>
-		<h:column>
-			<f:facet name="header">
-				<h:outputText value="Text"/>
-			</f:facet>
-			<h:outputText value="#{analysis.text}"/>
-		</h:column>
-		</h:dataTable>
+    	
+		<h:form>
+
+		    <p:dataTable var="row" value="#{analysisBean.analysis}"
+		            emptyMessage="No analysis found with given criteria">
+			
+		        <p:column filterBy="#{row.userid}" 
+		                headerText="User"
+		                filterOptions="#{analysisBean.uidsOptions}"
+		                filterMatchMode="exact">
+		            <h:outputText value="#{row.userid}" />
+		        </p:column>
+		
+		        <p:column filterBy="#{row.mode}"
+		                headerText="Mode"
+		                filterOptions="#{analysisBean.modesOptions}"
+		                filterMatchMode="exact">
+		            <h:outputText value="#{row.mode}" />
+		        </p:column>
+		        
+		        <p:column filterBy="#{row.text}"
+		                headerText="Text"
+		                filterMatchMode="contains">
+		            <h:outputText value="#{row.text}" />
+		        </p:column>
+		
+		        <p:column filterBy="#{row.result}" 
+		                headerText="Result" 
+		                filterMatchMode="contains">
+		            <h:outputText value="#{row.result}" />
+		        </p:column>
+		
+		        <p:column filterBy="#{row.numberOfKeywords}"
+		                headerText="No of Keywords"
+		                filterMatchMode="contains">
+		            <h:outputText value="#{row.numberOfKeywords}" />
+		        </p:column>
+		        
+		        <p:column filterBy="#{row.textSimilarity}"
+		                headerText="Similarity Text" 
+		                filterMatchMode="contains">
+		            <h:outputText value="#{row.textSimilarity}" />
+		        </p:column>
+		    </p:dataTable>
+		    
+		</h:form>
+                    
     </h:body>
 </html>
