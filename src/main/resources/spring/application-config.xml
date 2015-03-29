@@ -2,14 +2,36 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+    xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+    xmlns:wss="http://jax-ws.dev.java.net/spring/servlet"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context 
 		http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/data/mongo
         http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
-		">
+        http://jax-ws.dev.java.net/spring/core
+
+
+http://jax-ws.java.net/spring/core.xsd
+
+
+http://jax-ws.dev.java.net/spring/servlet
+
+       http://jax-ws.java.net/spring/servlet.xsd">
+    <wss:binding url="/analysis">
+        <wss:service>
+            <ws:service bean="#analysisWs"/>
+        </wss:service>
+    </wss:binding>
+
+    <!-- Web service bean -->
+    <bean id="analysisWs" class="com.sotiris.adminpanel.ws.AnalysisWS">
+    	<property name="analysisService" ref="AnalysisService" />
+    </bean>
+
+    <bean id="AnalysisService" class="com.sotiris.adminpanel.services.AnalysisServiceImpl" />
     
    
 	<mongo:mongo host="127.0.0.1" port="27017" />
@@ -18,4 +40,5 @@
 	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
 		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
 	</bean>
+	
 </beans>

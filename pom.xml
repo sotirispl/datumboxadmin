@@ -20,6 +20,7 @@
 
 		<!-- Spring -->
 		<spring-framework.version>3.2.3.RELEASE</spring-framework.version>
+		<spring.ws.version>2.1.4.RELEASE</spring.ws.version>
 
 		<!-- Hibernate / JPA -->
 		<hibernate.version>4.2.1.Final</hibernate.version>
@@ -42,6 +43,12 @@
 			<version>${spring-framework.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.jvnet.jax-ws-commons.spring</groupId>
+			<artifactId>jaxws-spring</artifactId>
+			<version>1.9</version>
+		</dependency>
+				
 		<!-- Other Web dependencies -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -172,6 +179,26 @@
 		<finalName>JavaServerFaces</finalName>
  
 		<plugins>
+			<plugin>  
+                 <groupId>org.codehaus.mojo</groupId>  
+                 <artifactId>jaxb2-maven-plugin</artifactId>  
+                 <version>1.4</version>  
+                 <executions>  
+                      <execution>  
+                           <goals>  
+                            	<goal>xjc</goal>  
+                           </goals>  
+                           <phase>generate-sources</phase>  
+                      </execution>  
+                 </executions>  
+                 <configuration>  
+                      <clearOutputDir>false</clearOutputDir>  
+                      <outputDirectory>src/main/java</outputDirectory>  
+                      <schemaDirectory>src/main/webapp/schemas</schemaDirectory>  
+                      <includeSchema>**/*.xsd</includeSchema>                        
+                      <enableIntrospection>false</enableIntrospection>  
+                 </configuration>  
+            </plugin>  
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

@@ -12,5 +12,20 @@
     <h:body bgcolor="white">
     	<h4>My Profile Details</h4>
     	<h:outputText value="#{loginBean.user.toString()}" />
+    	
+    	<h:dataTable value="#{analysisBean.analysis}" var="analysis" border="1">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="UUID"/>
+			</f:facet>
+			<h:outputText value="#{analysis.userid}"/>
+		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="Text"/>
+			</f:facet>
+			<h:outputText value="#{analysis.text}"/>
+		</h:column>
+		</h:dataTable>
     </h:body>
 </html>
